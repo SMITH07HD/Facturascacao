@@ -1,0 +1,265 @@
+body {
+    background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") no-repeat center center/cover;
+    min-height: 100vh;
+}
+
+/* OSCURECER FONDO */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: -1;
+}
+
+/* TARJETAS PRODUCTOS */
+.producto {
+    margin-bottom: 20px;
+}
+
+.producto .card {
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.producto .card:hover {
+    transform: scale(1.05);
+}
+
+/* IMAGEN */
+.producto img {
+    height: 150px;
+    object-fit: cover;
+}
+
+/* CARRITO */
+.card {
+    border-radius: 15px;
+}
+
+/* BOTONES */
+.btn-dark {
+    background: #000;
+    border: none;
+}
+
+.btn-dark:hover {
+    background: #333;
+}
+
+/* SCROLL PRODUCTOS */
+#productos {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* SCROLL CARRITO */
+#lista {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* FOOTER FIJO ABAJO */
+footer {
+    width: 100%;
+}
+
+h3 {
+    border-left: 5px solid #fff;
+    padding-left: 10px;
+}
+
+.categoria-card {
+    cursor: pointer;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.categoria-card:hover {
+    transform: scale(1.05);
+}
+
+.categoria-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.producto-card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.producto-card:hover {
+    transform: scale(1.05);
+}
+
+.producto-img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.precio {
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+}
+
+.btn-agregar {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    background: #f4f4f4;
+}
+
+/* pantalla tipo kiosco */
+.container-fluid {
+    height: 100vh;
+}
+
+/* carrito fijo estilo panel */
+.card {
+    border-radius: 20px;
+    position: sticky;
+    top: 10px;
+}
+
+/* botones grandes tipo touch */
+button {
+    font-size: 18px;
+    padding: 10px;
+}
+
+/* evitar scroll feo */
+#productos {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.btn-success {
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+.categoria-card {
+    height: 220px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1550547660-d9450f859349") no-repeat center center/cover;
+    font-family: Arial;
+}
+
+/* Oscurecer fondo para contraste */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: -1;
+}
+
+.categoria-card {
+    cursor: pointer;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s;
+    height: 320px;
+    color: white;
+}
+
+.categoria-card:hover {
+    transform: scale(1.05);
+}
+
+.categoria-img {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.categoria-card h2 {
+    color: white;
+    text-shadow: 0px 2px 5px black;
+}
+
+
+.total {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
+}
+
+.factura {
+    background: white;
+    max-width: 350px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px dashed #000;
+}
+body {
+    font-family: 'Courier New', monospace;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 120px;
+    filter: grayscale(100%);
+    margin-bottom: 5px;
+}
+
+.header h1 {
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.slogan {
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+}
+
+/* ESTILO TIPO TICKET 🔥 */
+body {
+    font-family: 'Courier New', monospace;
+}
+
+.factura {
+    background: white;
+    max-width: 350px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px dashed #000;
+}
+
+
+.cacao-emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.cacao-emoji img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #000; /* opcional para estilo tipo badge */
+}
