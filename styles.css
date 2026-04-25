@@ -263,3 +263,23 @@ body {
   border-radius: 50%;
   border: 2px solid #000; /* opcional para estilo tipo badge */
 }
+
+
+/* Carrito fijo al hacer scroll */
+.col-md-4 .card {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+}
+
+.col-md-4 .card .card-body {
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Espacio entre carrito y formulario de agregar producto */
+.card.mt-3 {
+    margin-top: 3rem !important;
+}
