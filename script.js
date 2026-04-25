@@ -429,10 +429,12 @@ async function imprimir() {
     <div class="factura">
         ${logoHTML}
         <div class="seccion datos">
-            <h2>Datos del Cliente</h2>
-            <p><strong>Nombre:</strong> ${cliente}</p>
-            <p><strong>Teléfono:</strong> ${telefono}</p>
-            <p><strong>Dirección:</strong> ${direccion}</p>
+           <h2>Datos del Cliente</h2>
+<p><strong>Nombre:</strong> ${cliente}</p>
+<p><strong>Teléfono:</strong> ${telefono}</p>
+<p><strong>Dirección:</strong> ${direccion}</p>
+<p><strong>📅 Fecha:</strong> ${new Date().toLocaleDateString('es-DO', {day:'2-digit', month:'long', year:'numeric'})}</p>
+<p><strong>🕒 Hora:</strong> ${new Date().toLocaleTimeString('es-DO', {hour:'2-digit', minute:'2-digit', hour12:true})}</p>
         </div>
         <hr>
         <div class="seccion">
