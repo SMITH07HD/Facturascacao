@@ -377,7 +377,7 @@ async function eliminarProducto(id) {
 // ============================================================
 //  FACTURA — IMPRIMIR
 // ============================================================
-function imprimir() {
+async function imprimir() {
     let cliente   = document.getElementById('cliente').value.trim();
     let telefono  = document.getElementById('telefono').value.trim();
     let direccion = document.getElementById('direccion').value.trim();
@@ -390,6 +390,13 @@ function imprimir() {
         alert('⚠️ El carrito está vacío');
         return;
     }
+
+    // ✅ Obtiene la URL absoluta del logo directamente del DOM
+    let imgEl    = document.querySelector('img[src="logo.png"]');
+    let logoSrc  = imgEl ? new URL('logo.png', window.location.href).href : '';
+    let logoHTML = logoSrc
+        ? `<img src="${logoSrc}" style="max-width:180px;display:block;margin:0 auto 12px;">`
+        : `<h1 style="text-align:center">☕ CACAO</h1>`;
 
     let subtotal  = 0;
     let itemsHTML = '';
@@ -409,11 +416,10 @@ function imprimir() {
 
     let contenido = `
     <html><head><title>Factura - CACAO</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body{font-family:Arial;background:#f5f5f5;padding:20px;}
         .factura{background:white;max-width:400px;margin:auto;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.2);}
-        h1,h2{text-align:center;}
+        h2{text-align:center;}
         .seccion{margin-top:15px;}
         .datos p{margin:3px 0;font-size:14px;}
         .producto{display:flex;justify-content:space-between;font-size:14px;margin:5px 0;}
@@ -421,7 +427,7 @@ function imprimir() {
         .redes{text-align:center;margin-top:15px;}
     </style></head><body>
     <div class="factura">
-        <h1>☕ CACAO</h1>
+        ${logoHTML}
         <div class="seccion datos">
             <h2>Datos del Cliente</h2>
             <p><strong>Nombre:</strong> ${cliente}</p>
@@ -460,7 +466,6 @@ function imprimir() {
     ventana.document.close();
     ventana.print();
 
-    // Guardar venta en Supabase
     guardarVentaDB({
         cliente,
         telefono,
@@ -470,7 +475,6 @@ function imprimir() {
         total
     });
 }
-
 // ============================================================
 //  HISTORIAL DE VENTAS
 // ============================================================
@@ -494,10 +498,6 @@ async function verHistorial() {
                 🕒 ${new Date(v.fecha).toLocaleString('es-DO')}
             </div>
             <div class="btns">
-                <button class="btn-custom btn-detail"
-                    onclick="verDetalles('${v.id}')">
-                    📋 Detalles
-                </button>
                 <button class="btn-custom btn-delete"
                     onclick="borrarVenta('${v.id}', this)">
                     🗑 Eliminar
@@ -505,9 +505,7 @@ async function verHistorial() {
             </div>
         </div>`).join('');
 
-    // ✅ Serializamos todas las ventas una sola vez, sin trucos de escaping
-    let ventasJSON = JSON.stringify(ventas);
-
+    // Inyectamos las credenciales para que el popup pueda conectarse a Supabase
     let contenido = `
     <html><head><title>Historial de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -518,32 +516,15 @@ async function verHistorial() {
         .venta-card{background:#1e293b;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 4px 10px rgba(0,0,0,0.4);}
         .venta-header{display:flex;justify-content:space-between;font-weight:bold;margin-bottom:10px;}
         .badge-total{background:#22c55e;padding:5px 10px;border-radius:8px;}
-        .btns{margin-top:10px;display:flex;gap:8px;}
+        .btns{margin-top:10px;}
         .btn-custom{border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;}
         .btn-delete{background:#ef4444;color:white;}
-        .btn-detail{background:#3b82f6;color:white;}
         .info{font-size:14px;opacity:.9;line-height:1.8;}
-        /* MODAL */
-        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;align-items:center;justify-content:center;}
-        .modal-overlay.activo{display:flex;}
-        .modal-box{background:#1e293b;border-radius:16px;padding:24px;width:90%;max-width:480px;box-shadow:0 8px 30px rgba(0,0,0,0.6);}
-        .modal-titulo{font-size:18px;font-weight:bold;margin-bottom:16px;border-bottom:1px solid #334155;padding-bottom:10px;}
-        .item-fila{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #334155;font-size:15px;}
-        .item-fila:last-child{border-bottom:none;}
-        .item-precio{color:#22c55e;font-weight:bold;}
-        .modal-linea{display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;}
-        .modal-linea.grande{font-size:19px;font-weight:bold;color:#22c55e;border-top:2px solid #475569;margin-top:12px;padding-top:12px;}
-        .btn-cerrar{margin-top:18px;width:100%;background:#475569;color:white;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:15px;}
-        .btn-cerrar:hover{background:#64748b;}
     </style>
     <script>
         const { createClient } = supabase;
         const _db = createClient('${SUPABASE_URL}', '${SUPABASE_KEY}');
 
-        // ✅ Todas las ventas disponibles en el popup, sin pasar nada por onclick
-        const VENTAS_DATA = ${ventasJSON};
-
-        /* ---- BORRAR VENTA ---- */
         async function borrarVenta(id, btn) {
             if (!confirm('¿Eliminar esta venta?')) return;
             const { error } = await _db.from('ventas').delete().eq('id', id);
@@ -551,89 +532,17 @@ async function verHistorial() {
             btn.closest('.venta-card').remove();
             alert('✅ Venta eliminada');
         }
-
-        /* ---- VER DETALLES ---- */
-        function verDetalles(id) {
-            // Buscar la venta por ID dentro de los datos ya cargados
-            let venta = VENTAS_DATA.find(v => String(v.id) === String(id));
-            if (!venta) { alert('No se encontró la venta'); return; }
-
-            let items = [];
-            try {
-                let raw = venta.productos;
-                // Puede venir como string JSON o ya como array (Supabase a veces parsea)
-                if (typeof raw === 'string') raw = JSON.parse(raw);
-                items = Array.isArray(raw) ? raw : [];
-            } catch(e) {
-                console.error('Error parseando productos:', e);
-                items = [];
-            }
-
-            let subtotal   = 0;
-            let filasHTML  = '';
-
-            if (items.length === 0) {
-                filasHTML = '<p style="opacity:.6;text-align:center;padding:20px 0;">Sin detalle de productos</p>';
-            } else {
-                items.forEach(item => {
-                    let linea = parseFloat(item.precio) * parseInt(item.cantidad);
-                    subtotal += linea;
-                    filasHTML += \`
-                        <div class="item-fila">
-                            <span>\${item.nombre} <span style="opacity:.5;font-size:13px;">x\${item.cantidad}</span></span>
-                            <span class="item-precio">$\${linea.toFixed(2)}</span>
-                        </div>\`;
-                });
-            }
-
-            let tax   = subtotal * 0.06625;
-            let total = subtotal + tax;
-
-            document.getElementById('modal-titulo').innerText   = '📋 Pedido de ' + venta.cliente;
-            document.getElementById('modal-items').innerHTML    = filasHTML;
-            document.getElementById('modal-subtotal').innerText = '$' + subtotal.toFixed(2);
-            document.getElementById('modal-tax').innerText      = '$' + tax.toFixed(2);
-            document.getElementById('modal-total').innerText    = '$' + total.toFixed(2);
-            document.getElementById('modal').classList.add('activo');
-        }
-
-        function cerrarModal() {
-            document.getElementById('modal').classList.remove('activo');
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target === document.getElementById('modal')) cerrarModal();
-        });
     <\/script>
     </head><body>
-
     <h1>📊 Historial de Ventas</h1>
     ${filas}
-
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modal">
-        <div class="modal-box">
-            <div class="modal-titulo" id="modal-titulo"></div>
-            <div id="modal-items"></div>
-            <div class="modal-linea">
-                <span>Subtotal:</span><span id="modal-subtotal"></span>
-            </div>
-            <div class="modal-linea" style="opacity:.7;font-size:14px;">
-                <span>Tax (6.625%):</span><span id="modal-tax"></span>
-            </div>
-            <div class="modal-linea grande">
-                <span>TOTAL:</span><span id="modal-total"></span>
-            </div>
-            <button class="btn-cerrar" onclick="cerrarModal()">✕ Cerrar</button>
-        </div>
-    </div>
-
     </body></html>`;
 
     let ventana = window.open('', '', 'width=900,height=700');
     ventana.document.write(contenido);
     ventana.document.close();
 }
+
 // ============================================================
 //  INICIAR APLICACIÓN
 // ============================================================
