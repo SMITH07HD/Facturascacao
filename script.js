@@ -804,3 +804,64 @@ function toggleFormulario() {
         flecha.style.transform = 'rotate(0deg)';
     }
 }
+
+
+// ============================================================
+//  BOTÓN FLOTANTE — AGREGAR PRODUCTO MOBILE
+// ============================================================
+
+// Mostrar FAB solo en mobile
+if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    document.getElementById('fab-agregar').style.display = 'flex';
+    document.getElementById('fab-agregar').style.alignItems = 'center';
+    document.getElementById('fab-agregar').style.justifyContent = 'center';
+}
+
+function abrirFormularioMobile() {
+    document.getElementById('fab-bg').style.display    = 'block';
+    setTimeout(() => {
+        document.getElementById('fab-sheet').style.transform = 'translateY(0)';
+    }, 10);
+}
+
+function cerrarFormularioMobile() {
+    document.getElementById('fab-sheet').style.transform = 'translateY(100%)';
+    document.getElementById('fab-bg').style.display = 'none';
+}
+
+async function agregarNuevoProductoMobile() {
+    let nombre    = document.getElementById('nuevoNombre2').value.trim();
+    let precio    = parseFloat(document.getElementById('nuevoPrecio2').value);
+    let categoria = document.getElementById('nuevaCategoria2').value;
+    let urlImagen = document.getElementById('nuevaImagen2').value.trim();
+    let archivo   = document.getElementById('imagenArchivo2').files[0];
+
+    if (!nombre || isNaN(precio) || precio <= 0) {
+        alert('⚠️ Completa el nombre y un precio válido');
+        return;
+    }
+
+    const guardar = async (img) => {
+        let nuevo    = { nombre, precio, categoria, img };
+        let guardado = await agregarProductoDB(nuevo);
+        if (guardado) {
+            productos.push(guardado);
+            alert('✅ Producto agregado');
+            // Limpiar campos
+            document.getElementById('nuevoNombre2').value    = '';
+            document.getElementById('nuevoPrecio2').value    = '';
+            document.getElementById('nuevaImagen2').value    = '';
+            document.getElementById('imagenArchivo2').value  = '';
+            cerrarFormularioMobile();
+            cargarProductos();
+        }
+    };
+
+    if (archivo) {
+        let reader    = new FileReader();
+        reader.onload = (e) => guardar(e.target.result);
+        reader.readAsDataURL(archivo);
+    } else {
+        guardar(urlImagen || 'https://via.placeholder.com/300?text=Producto');
+    }
+}

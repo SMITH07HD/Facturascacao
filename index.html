@@ -159,5 +159,49 @@
 <!-- Tu JS -->
 <script src="script.js"></script>
 
+<!-- BOTÓN FLOTANTE MOBILE -->
+<button id="fab-agregar" onclick="abrirFormularioMobile()"
+    style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;
+    width:60px;height:60px;border-radius:50%;border:none;
+    background:#d32f2f;color:white;font-size:28px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.4);cursor:pointer;">
+    ➕
+</button>
+
+<!-- BOTTOM SHEET AGREGAR PRODUCTO (mobile) -->
+<div id="fab-bg" onclick="cerrarFormularioMobile()"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:8001;"></div>
+
+<div id="fab-sheet" style="
+    position:fixed;bottom:0;left:0;right:0;z-index:8002;
+    background:#1e293b;color:white;
+    border-radius:20px 20px 0 0;
+    padding:20px 20px 40px;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.32,.72,0,1);
+    max-height:90vh;overflow-y:auto;">
+
+    <div style="width:40px;height:4px;background:#475569;border-radius:4px;margin:0 auto 20px;"></div>
+    <h5 style="color:white;margin-bottom:16px;font-weight:700;">➕ Agregar Producto</h5>
+
+    <input type="text"   id="nuevoNombre2"   class="form-control mb-2" placeholder="Nombre del producto">
+    <input type="number" id="nuevoPrecio2"   class="form-control mb-2" placeholder="Precio">
+    <input type="text"   id="nuevaImagen2"   class="form-control mb-2" placeholder="URL de imagen (opcional)">
+    <input type="file"   id="imagenArchivo2" class="form-control mb-2" accept="image/*">
+
+    <select id="nuevaCategoria2" class="form-control mb-2">
+        <option value="yaroas">🍟 Yaroas</option>
+        <option value="chimis">🌭 Chimis y Sandwiches</option>
+        <option value="empanadas">🥟 Empanadas</option>
+        <option value="bebidas">🥤 Bebidas</option>
+    </select>
+
+    <button onclick="agregarNuevoProductoMobile()" class="btn btn-danger w-100 mt-2"
+        style="padding:14px;font-size:16px;font-weight:700;">
+        💾 Guardar Producto
+    </button>
+</div>
+
+
 </body>
 </html>
