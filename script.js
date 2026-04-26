@@ -783,3 +783,24 @@ cargarProductosDB();
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+
+// ============================================================
+//  TOGGLE FORMULARIO AGREGAR PRODUCTO
+// ============================================================
+let formularioAbierto = false;
+
+function toggleFormulario() {
+    let body   = document.getElementById('formulario-body');
+    let flecha = document.getElementById('flecha-formulario');
+
+    formularioAbierto = !formularioAbierto;
+
+    if (formularioAbierto) {
+        body.style.maxHeight = '600px';
+        flecha.style.transform = 'rotate(180deg)';
+    } else {
+        body.style.maxHeight = '0';
+        flecha.style.transform = 'rotate(0deg)';
+    }
+}
