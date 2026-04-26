@@ -811,22 +811,36 @@ function toggleFormulario() {
 // ============================================================
 
 // Mostrar FAB solo en mobile
-if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    document.getElementById('fab-agregar').style.display = 'flex';
-    document.getElementById('fab-agregar').style.alignItems = 'center';
-    document.getElementById('fab-agregar').style.justifyContent = 'center';
-}
-
+// Mostrar FAB solo en mobile
+// Mostrar FAB solo en mobile — espera que el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        let fab = document.getElementById('fab-agregar');
+        if (fab) {
+            fab.style.display         = 'flex';
+            fab.style.alignItems      = 'center';
+            fab.style.justifyContent  = 'center';
+        }
+    }
+});
 function abrirFormularioMobile() {
-    document.getElementById('fab-bg').style.display    = 'block';
+    let bg    = document.getElementById('fab-bg');
+    let sheet = document.getElementById('fab-sheet');
+    if (!bg || !sheet) return;
+
+    bg.style.display = 'block';
     setTimeout(() => {
-        document.getElementById('fab-sheet').style.transform = 'translateY(0)';
+        sheet.style.transform = 'translateY(0)';
     }, 10);
 }
 
 function cerrarFormularioMobile() {
-    document.getElementById('fab-sheet').style.transform = 'translateY(100%)';
-    document.getElementById('fab-bg').style.display = 'none';
+    let bg    = document.getElementById('fab-bg');
+    let sheet = document.getElementById('fab-sheet');
+    if (!bg || !sheet) return;
+
+    sheet.style.transform = 'translateY(100%)';
+    bg.style.display      = 'none';
 }
 
 async function agregarNuevoProductoMobile() {
