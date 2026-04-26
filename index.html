@@ -50,6 +50,7 @@
 </div>
 
 <!-- NAVBAR -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-danger px-3 d-flex flex-wrap gap-2">
     <span class="navbar-brand mb-0 h1">
         🍔 CACAO FACTURAS
@@ -58,7 +59,10 @@
         🏠 Inicio
     </button>
     <button onclick="verHistorial()" class="btn btn-warning">
-        📚 Historial de Ventas
+        📚 Historial
+    </button>
+    <button onclick="abrirFormularioMobile()" class="btn btn-light">
+        ➕ Agregar Producto
     </button>
 </nav>
 
@@ -109,39 +113,9 @@
 <!-- FORMULARIO NUEVO PRODUCTO (colapsable) -->
 <div class="container-fluid mt-3">
     <div class="card">
-        <!-- HEADER CLICKEABLE -->
-        <div onclick="toggleFormulario()" style="
-            display:flex;justify-content:space-between;align-items:center;
-            padding:14px 16px;cursor:pointer;
-            background:#1e293b;color:white;border-radius:8px;
-            user-select:none;">
-            <span style="font-weight:700;font-size:15px;">➕ Agregar Producto</span>
-            <span id="flecha-formulario" style="font-size:20px;transition:transform .3s;">▼</span>
-        </div>
+    
 
-        <!-- CONTENIDO COLAPSABLE -->
-        <div id="formulario-body" style="
-            overflow:hidden;
-            max-height:0;
-            transition:max-height .4s ease, padding .3s ease;
-            padding:0 16px;">
-
-            <div style="padding-bottom:16px;padding-top:12px;">
-                <input type="text"   id="nuevoNombre"   class="form-control mb-2" placeholder="Nombre del producto">
-                <input type="number" id="nuevoPrecio"   class="form-control mb-2" placeholder="Precio">
-                <input type="text"   id="nuevaImagen"   class="form-control mb-2" placeholder="URL de imagen (opcional)">
-                <input type="file"   id="imagenArchivo" class="form-control mb-2" accept="image/*">
-
-                <select id="nuevaCategoria" class="form-control mb-2">
-                    <option value="yaroas">🍟 Yaroas</option>
-                    <option value="chimis">🌭 Chimis y Sandwiches</option>
-                    <option value="empanadas">🥟 Empanadas</option>
-                    <option value="bebidas">🥤 Bebidas</option>
-                </select>
-
-                <button onclick="agregarNuevoProducto()" class="btn btn-primary w-100">
-                    💾 Guardar Producto
-                </button>
+                
             </div>
         </div>
     </div>
@@ -154,14 +128,6 @@
 <!-- Tu JS -->
 <script src="script.js"></script>
 
-<!-- BOTÓN FLOTANTE MOBILE -->
-<button id="fab-agregar" onclick="abrirFormularioMobile()"
-    style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;
-    width:60px;height:60px;border-radius:50%;border:none;
-    background:#d32f2f;color:white;font-size:28px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.4);cursor:pointer;">
-    ➕
-</button>
 
 <!-- BOTTOM SHEET AGREGAR PRODUCTO (mobile) -->
 <div id="fab-bg" onclick="cerrarFormularioMobile()"
